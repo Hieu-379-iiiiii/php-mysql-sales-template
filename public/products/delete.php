@@ -20,11 +20,6 @@ try {
 
     $conn->begin_transaction();
 
-    /*
-     * Xóa các ảnh thuộc sản phẩm trước.
-     * Điều này cần thiết nếu product_images có
-     * foreign key tới products.
-     */
     $sql = "
         DELETE FROM product_images
         WHERE ProductID = ?
@@ -40,10 +35,6 @@ try {
     $stmt->execute();
     $stmt->close();
 
-
-    /*
-     * Xóa sản phẩm.
-     */
     $sql = "
         DELETE FROM products
         WHERE ProductID = ?
