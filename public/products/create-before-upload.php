@@ -5,7 +5,7 @@ $pageTitle = 'Thêm sản phẩm';
 require_once '/var/www/src/config/database.php';
 
 $error = '';
-
+$file = $_FILES['product_image'] ?? null;
 $sqlCategories = "
     SELECT CategoryID, CategoryName
     FROM categories
@@ -88,6 +88,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $supplierID,
             $categoryID
         );
+        
+
+        if ($stmt->execute()) {
+            header('Location: /products/');
+            exit;
+        }
+
+        $stmtImage->bind_param(
+            'iss',
+            $productID,
+            $newFileName,
+            $altText
+        );
 
         if ($stmt->execute()) {
             header('Location: /products/');
@@ -116,8 +129,15 @@ require_once '/var/www/src/includes/navbar.php';
                 </div>
             <?php endif; ?>
 
-            <form method="POST" action="">
-
+            <form method="POST" action="" enctype="multipart/form-data">
+                <input
+                type="file"
+                class="form-control"
+                id="productImage"
+                name="product_image"
+                accept="image/jpeg,image/png,image/webp"
+                required
+            >
                 <div class="row">
                     <!-- ProductCode -->
                     <div class="col-md-6 mb-3">
