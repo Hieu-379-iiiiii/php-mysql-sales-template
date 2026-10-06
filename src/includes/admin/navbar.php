@@ -19,13 +19,13 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/categories/">
+                    <a class="nav-link" href="/admin/categories/">
                         Danh mục
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/products/">
+                    <a class="nav-link" href="/admin/products/">
                         Sản phẩm
                     </a>
                 </li>

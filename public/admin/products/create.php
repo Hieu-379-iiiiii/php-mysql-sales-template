@@ -484,7 +484,7 @@ require_once '/var/www/src/includes/admin/navbar.php';
             Lưu
         </button>
 
-        <a href="/products/" class="btn btn-secondary">
+        <a href="/admin/products/" class="btn btn-secondary">
             Hủy
         </a>
 

@@ -545,7 +545,7 @@ require_once '/var/www/src/includes/admin/navbar.php';
 
         <h2>Sửa sản phẩm</h2>
 
-        <a href="/products/" class="btn btn-secondary">
+        <a href="/admin/products/" class="btn btn-secondary">
             Quay lại
         </a>
 
@@ -912,7 +912,7 @@ require_once '/var/www/src/includes/admin/navbar.php';
                 <div class="d-flex justify-content-end gap-2">
 
                     <a
-                        href="/products/"
+                        href="/admin/products/"
                         class="btn btn-secondary"
                     >
                         Hủy
