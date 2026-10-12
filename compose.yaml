@@ -9,6 +9,7 @@ services:
       - ./public:/var/www/html
       - ./src:/var/www/src
     environment:
+      TZ: Asia/Ho_Chi_Minh
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
