@@ -31,7 +31,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin/shippers/">
+                    <a class="nav-link" href="/admin/orders/">
                         Đơn hàng
                     </a>
                 </li>
