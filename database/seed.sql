@@ -47,7 +47,25 @@ VALUES
      'Chiếc', 18500000.00, 10, TRUE, 2, 2),
     ('SP003', 'Chuột không dây C',
      'Chuột không dây nhỏ gọn, kết nối ổn định.',
-     'Chiếc', 450000.00, 50, TRUE, 2, 3);
+     'Chiếc', 450000.00, 50, TRUE, 2, 3),
+    ('SP004', 'Tai nghe Bluetooth H1',
+     'Tai nghe không dây âm thanh rõ nét, thời lượng pin ấn tượng.',
+     'Chiếc', 1290000.00, 35, TRUE, 1, 3),
+    ('SP005', 'Máy tính bảng iPad Air',
+     'Máy tính bảng mỏng nhẹ, hỗ trợ công việc và giải trí hiệu quả.',
+     'Chiếc', 18900000.00, 8, TRUE, 2, 2),
+    ('SP006', 'Bàn phím cơ F1',
+     'Bàn phím cơ có đèn RGB, thiết kế tiện dụng cho người dùng.',
+     'Chiếc', 950000.00, 25, TRUE, 2, 3),
+    ('SP007', 'Điện thoại Nokia 2720',
+     'Điện thoại basic thiết kế bền bỉ, dễ sử dụng, phù hợp nhu cầu cơ bản.',
+     'Chiếc', 2200000.00, 18, TRUE, 1, 1),
+    ('SP008', 'Tai nghe chụp đầu Studio',
+     'Tai nghe chụp đầu chống ồn, âm thanh sống động cho trải nghiệm nghe nhạc.',
+     'Chiếc', 1450000.00, 12, TRUE, 1, 3),
+    ('SP009', 'Drawing Tablet X',
+     'Bảng vẽ kỹ thuật số hỗ trợ thiết kế đồ họa và chỉnh sửa ảnh.',
+     'Chiếc', 3990000.00, 9, TRUE, 2, 2);
 
 INSERT INTO product_images
     (ProductID, ImageFile, AltText, IsPrimary, SortOrder)
@@ -55,7 +73,15 @@ VALUES
     (1, 'phone-a-1.webp', 'Điện thoại Smartphone A - ảnh chính', TRUE, 1),
     (1, 'phone-a-2.jpg', 'Điện thoại Smartphone A - mặt sau', FALSE, 2),
     (2, 'laptop-b-1.jpeg', 'Laptop B - ảnh chính', TRUE, 1),
-    (3, 'mouse-c-1.webp', 'Chuột không dây C - ảnh chính', TRUE, 1);
+    (3, 'mouse-c-1.webp', 'Chuột không dây C - ảnh chính', TRUE, 1),
+    (4, 'earsbud.jfif', 'Tai nghe Bluetooth H1 - ảnh chính', TRUE, 1),
+    (4, 'headphone.jpg', 'Tai nghe Bluetooth H1 - góc nhìn khác', FALSE, 2),
+    (5, 'Ipad.png', 'Máy tính bảng iPad Air - ảnh chính', TRUE, 1),
+    (6, 'mouse-c-1.webp', 'Bàn phím cơ F1 - ảnh chính', TRUE, 1),
+    (7, 'nokia.jpg', 'Điện thoại Nokia 2720 - ảnh chính', TRUE, 1),
+    (8, 'headphone2.webp', 'Tai nghe chụp đầu Studio - ảnh chính', TRUE, 1),
+    (9, 'drawingtablet.jpg', 'Drawing Tablet X - ảnh chính', TRUE, 1),
+    (8, 'headphone.jpg', 'Tai nghe chụp đầu Studio - ảnh phụ', FALSE, 2);
 
 INSERT INTO orders (OrderDate, CustomerID, EmployeeID, ShipperID)
 VALUES
