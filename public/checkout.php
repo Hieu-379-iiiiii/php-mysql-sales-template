@@ -5,6 +5,13 @@ require_once '/var/www/src/config/database.php';
 
 $pageTitle = 'Đặt hàng';
 
+$isLoggedIn = !empty($_SESSION['customer_id']);
+$customerID = null;
+$email = '';
+$customerName = '';
+$phone = '';
+$address = '';
+
 $cart = $_SESSION['cart'] ?? [];
 
 if (empty($cart)) {
@@ -82,9 +89,6 @@ if (empty($cartItems)) {
 }
 
 $errorMessage = '';
-$customerName = '';
-$phone = '';
-$address = '';
 
 if ($isLoggedIn) {
 
@@ -146,29 +150,20 @@ if ($isLoggedIn) {
         $customer['Address'] ?? '';
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST'
     && isset($_POST['place_order'])) {
 
-   if ($isLoggedIn) {
+    if ($isLoggedIn) {
 
-    $phone =
-        trim($_POST['phone'] ?? '');
+        $phone = trim($_POST['phone'] ?? '');
+        $address = trim($_POST['address'] ?? '');
 
-    $address =
-        trim($_POST['address'] ?? '');
+    } else {
 
-} else {
-
-    $customerName =
-        trim($_POST['customer_name'] ?? '');
-
-    $phone =
-        trim($_POST['phone'] ?? '');
-
-    $address =
-        trim($_POST['address'] ?? '');
-}
+        $customerName = trim($_POST['customer_name'] ?? '');
+        $phone = trim($_POST['phone'] ?? '');
+        $address = trim($_POST['address'] ?? '');
+    }
 
     if ($customerName === ''
         || $phone === ''
@@ -245,100 +240,88 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
 
             if ($isLoggedIn) {
 
-    $sqlAccount = "
-        SELECT CustomerID
-        FROM customers
-        WHERE CustomerID = ?
-          AND Email IS NOT NULL
-        FOR UPDATE
-    ";
+                $sqlAccount = "
+                    SELECT CustomerID
+                    FROM customers
+                    WHERE CustomerID = ?
+                      AND Email IS NOT NULL
+                    FOR UPDATE
+                ";
 
-    $stmtAccount =
-        $conn->prepare($sqlAccount);
+                $stmtAccount =
+                    $conn->prepare($sqlAccount);
 
-    $stmtAccount->bind_param(
-        'i',
-        $customerID
-    );
+                $stmtAccount->bind_param(
+                    'i',
+                    $customerID
+                );
 
-    $stmtAccount->execute();
+                $stmtAccount->execute();
 
-    $accountResult =
-        $stmtAccount->get_result();
+                $accountResult =
+                    $stmtAccount->get_result();
 
-    $account =
-        $accountResult->fetch_assoc();
+                $account =
+                    $accountResult->fetch_assoc();
 
-    $accountResult->free();
-    $stmtAccount->close();
+                $accountResult->free();
+                $stmtAccount->close();
 
-    if (!$account) {
-        throw new Exception(
-            'Tài khoản khách hàng không còn hợp lệ.'
-        );
-    }
+                if (!$account) {
+                    throw new Exception(
+                        'Tài khoản khách hàng không còn hợp lệ.'
+                    );
+                }
 
-    $sqlUpdateCustomer = "
-        UPDATE customers
-        SET
-            Phone = ?,
-            Address = ?
-        WHERE CustomerID = ?
-    ";
+                $sqlUpdateCustomer = "
+                    UPDATE customers
+                    SET
+                        Phone = ?,
+                        Address = ?
+                    WHERE CustomerID = ?
+                ";
 
-    $stmtUpdateCustomer =
-        $conn->prepare($sqlUpdateCustomer);
+                $stmtUpdateCustomer =
+                    $conn->prepare($sqlUpdateCustomer);
 
-    $stmtUpdateCustomer->bind_param(
-        'ssi',
-        $phone,
-        $address,
-        $customerID
-    );
+                $stmtUpdateCustomer->bind_param(
+                    'ssi',
+                    $phone,
+                    $address,
+                    $customerID
+                );
 
-    $stmtUpdateCustomer->execute();
-    $stmtUpdateCustomer->close();
+                $stmtUpdateCustomer->execute();
+                $stmtUpdateCustomer->close();
 
-} else {
+            } else {
 
-    $sqlCustomer = "
-        INSERT INTO customers (
-            CustomerName,
-            Address,
-            Phone
-        )
-        VALUES (?, ?, ?)
-    ";
+                $sqlCustomer = "
+                    INSERT INTO customers (
+                        CustomerName,
+                        Address,
+                        Phone
+                    )
+                    VALUES (?, ?, ?)
+                ";
 
-    $stmtCustomer =
-        $conn->prepare($sqlCustomer);
+                $stmtCustomer =
+                    $conn->prepare($sqlCustomer);
 
-    $stmtCustomer->bind_param(
-        'sss',
-        $customerName,
-        $address,
-        $phone
-    );
+                $stmtCustomer->bind_param(
+                    'sss',
+                    $customerName,
+                    $address,
+                    $phone
+                );
 
-    $stmtCustomer->execute();
+                $stmtCustomer->execute();
 
-    $customerID =
-        $conn->insert_id;
+                $customerID =
+                    $conn->insert_id;
 
-    $stmtCustomer->close();
-}
-
-            $stmtCustomer = $conn->prepare($sqlCustomer);
-            $stmtCustomer->bind_param(
-                'sss',
-                $customerName,
-                $address,
-                $phone
-            );
-            $stmtCustomer->execute();
-
-            $customerID = $conn->insert_id;
-            $stmtCustomer->close();
+                $stmtCustomer->close();
+            }
 
             $status = 'Pending';
 
@@ -445,80 +428,46 @@ require_once '/var/www/src/includes/frontend/navbar.php';
 
                         <?php if ($isLoggedIn): ?>
 
-    <div class="mb-3">
+                            <div class="mb-3">
+                                <label class="form-label">Họ và tên</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    value="<?= htmlspecialchars($customerName) ?>"
+                                    readonly
+                                >
+                            </div>
 
-        <label class="form-label">
-            Họ và tên
-        </label>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    value="<?= htmlspecialchars($email) ?>"
+                                    readonly
+                                >
+                            </div>
 
-        <input
-            type="text"
-            class="form-control"
-            value="<?= htmlspecialchars(
-                $customerName
-            ) ?>"
-            readonly
-        >
+                        <?php else: ?>
 
-    </div>
+                            <div class="mb-3">
+                                <label for="customer_name" class="form-label">
+                                    Họ và tên
+                                </label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="customer_name"
+                                    name="customer_name"
+                                    value="<?= htmlspecialchars($customerName) ?>"
+                                    required
+                                >
+                            </div>
 
-    <div class="mb-3">
-
-        <label class="form-label">
-            Email
-        </label>
-
-        <input
-            type="email"
-            class="form-control"
-            value="<?= htmlspecialchars(
-                $email
-            ) ?>"
-            readonly
-        >
-
-    </div>
-
-<?php else: ?>
-
-    <div class="mb-3">
-
-        <label
-            for="customer_name"
-            class="form-label"
-        >
-            Họ và tên
-        </label>
-
-        <input
-            type="text"
-            class="form-control"
-            id="customer_name"
-            name="customer_name"
-            value="<?= htmlspecialchars(
-                $customerName
-            ) ?>"
-            required
-        >
-
-    </div>
-
-<?php endif; ?>
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="customer_name"
-                                name="customer_name"
-                                value="<?= htmlspecialchars($customerName) ?>"
-                                required
-                            >
-                        </div>
+                        <?php endif; ?>
 
                         <div class="mb-3">
-                            <label
-                                for="phone"
-                                class="form-label"
-                            >
+                            <label for="phone" class="form-label">
                                 Số điện thoại
                             </label>
                             <input
@@ -532,10 +481,7 @@ require_once '/var/www/src/includes/frontend/navbar.php';
                         </div>
 
                         <div class="mb-3">
-                            <label
-                                for="address"
-                                class="form-label"
-                            >
+                            <label for="address" class="form-label">
                                 Địa chỉ
                             </label>
                             <textarea
