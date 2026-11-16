@@ -93,16 +93,12 @@ require_once '/var/www/src/includes/frontend/navbar.php';
 
     <section class="row align-items-center mb-5 g-4">
         <div class="col-lg-7">
-            <span class="badge bg-primary-subtle text-primary-emphasis mb-3 px-3 py-2">
-                Sales Management System
-            </span>
             <h1 class="display-5 fw-bold mb-3">Khám phá sản phẩm mới và bán chạy</h1>
             <p class="lead text-muted mb-4">
                 Giao diện cửa hàng giúp bạn theo dõi những sản phẩm gần đây, sản phẩm hot nhất và nhanh chóng truy cập vào chi tiết từng mặt hàng.
             </p>
             <div class="d-flex flex-wrap gap-2">
                 <a href="/products.php" class="btn btn-primary btn-lg">Xem tất cả sản phẩm</a>
-                <a href="/products-api.php" class="btn btn-outline-primary btn-lg">Dùng API demo</a>
             </div>
         </div>
 
